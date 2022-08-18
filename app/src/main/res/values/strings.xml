@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Factory</string>
+    <string name="app_name_after">Factory</string>
+    <string name="text_bottom">Войдите в свою учётную запись</string>
+    <string name="btnSignIn">Войти</string>
+    <string name="btnRegister">Зарегистрироваться</string>
+</resources>
