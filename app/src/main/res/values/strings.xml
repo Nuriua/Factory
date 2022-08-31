@@ -4,4 +4,10 @@
     <string name="text_bottom">Войдите в свою учётную запись</string>
     <string name="btnSignIn">Войти</string>
     <string name="btnRegister">Зарегистрироваться</string>
+    <string name="email">Email</string>
+    <string name="pass">Пароль</string>
+    <string name="name">Имя</string>
+    <string name="phone">Телефон</string>
+    <string name="sumForDay">Заработано за день: </string>
+    <string name="sumForMonth">Заработано за месяц: </string>
 </resources>

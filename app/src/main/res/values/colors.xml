@@ -10,4 +10,7 @@
     <color name="btn_sign_in">#CFA1B9</color>
     <color name="btn_register">#CFA1B9</color>
     <color name="ripple_effect">#A88396</color>
+    <color name="colorPrimary">#E8BCB5</color>
+    <color name="colorPrimaryDark">#9C6A83</color>
+    <color name="tint">#E8B5CF</color>
 </resources>
