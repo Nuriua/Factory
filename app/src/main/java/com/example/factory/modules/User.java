@@ -1,7 +1,8 @@
 package com.example.factory.modules;
 
 public class User {
-    private String name, email, pass, phone;
+    private String name;
+    private String email, pass, phone;
     public User() {}
 
     public User(String name, String email, String pass, String phone) {

@@ -8,26 +8,24 @@
 
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="34dp"
-        android:layout_marginTop="51dp"
-        android:text="@string/sumForDay"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        app:drawableTint="@color/tint" />
-
-    <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
         android:layout_marginStart="34dp"
         android:layout_marginTop="57dp"
         android:text="@string/sumForMonth"
         android:textColor="@color/black"
-        android:textSize="12sp"
+        android:textSize="15sp"
+        app:drawableTint="@color/tint" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="75dp"
+        android:textColor="@color/black"
+        android:textSize="15sp"
         app:drawableTint="@color/tint" />
 
     <ImageView
@@ -42,14 +40,14 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/name"
         android:textColor="@color/black"
-        android:textSize="12sp"
+        android:textSize="15sp"
         android:layout_marginStart="226dp"
         android:layout_marginTop="138dp"
         />
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="395dp"
         android:layout_height="372dp"
         android:layout_marginStart="10dp"
@@ -114,8 +112,126 @@
                     android:layout_height="wrap_content" />
             </TableRow>
 
+            <TableRow>
+                <EditText android:id="@+id/operation2"
+                    android:layout_weight="0.5"
+                    android:inputType="text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <EditText android:id="@+id/price2"
+                    android:layout_weight="0.5"
+                    android:inputType="numberDecimal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <EditText android:id="@+id/siz2"
+                    android:layout_weight="0.5"
+                    android:inputType="numberDecimal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <EditText android:id="@+id/amount2"
+                    android:layout_weight="0.5"
+                    android:inputType="numberDecimal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView android:id="@+id/tvResult2"
+                    android:layout_weight="0.5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </TableRow>
+
+            <TableRow>
+                <EditText android:id="@+id/operation3"
+                    android:layout_weight="0.5"
+                    android:inputType="text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <EditText android:id="@+id/price3"
+                    android:layout_weight="0.5"
+                    android:inputType="numberDecimal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <EditText android:id="@+id/siz3"
+                    android:layout_weight="0.5"
+                    android:inputType="numberDecimal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <EditText android:id="@+id/amount3"
+                    android:layout_weight="0.5"
+                    android:inputType="numberDecimal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView android:id="@+id/tvResult3"
+                    android:layout_weight="0.5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </TableRow>
+
+            <TableRow>
+                <EditText android:id="@+id/operation4"
+                    android:layout_weight="0.5"
+                    android:inputType="text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <EditText android:id="@+id/price4"
+                    android:layout_weight="0.5"
+                    android:inputType="numberDecimal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <EditText android:id="@+id/siz4"
+                    android:layout_weight="0.5"
+                    android:inputType="numberDecimal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <EditText android:id="@+id/amount4"
+                    android:layout_weight="0.5"
+                    android:inputType="numberDecimal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView android:id="@+id/tvResult4"
+                    android:layout_weight="0.5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </TableRow>
+
+            <TableRow>
+                <EditText android:id="@+id/operation5"
+                    android:layout_weight="0.5"
+                    android:inputType="text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <EditText android:id="@+id/price5"
+                    android:layout_weight="0.5"
+                    android:inputType="numberDecimal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <EditText android:id="@+id/siz5"
+                    android:layout_weight="0.5"
+                    android:inputType="numberDecimal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <EditText android:id="@+id/amount5"
+                    android:layout_weight="0.5"
+                    android:inputType="numberDecimal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView android:id="@+id/tvResult5"
+                    android:layout_weight="0.5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </TableRow>
+
         </TableLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:background="@drawable/btn_sign_in"
+        android:onClick="clickButton"
+        android:text="Рассчитать заработок" />
 
 
 </RelativeLayout>
