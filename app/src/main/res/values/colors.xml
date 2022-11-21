@@ -12,5 +12,7 @@
     <color name="ripple_effect">#A88396</color>
     <color name="colorPrimary">#E8BCB5</color>
     <color name="colorPrimaryDark">#9C6A83</color>
+    <color name="colorMenu">#CFA1B9</color>
     <color name="tint">#E8B5CF</color>
+    <color name="colorIcon">#553741</color>
 </resources>

@@ -2,14 +2,15 @@ package com.example.factory.modules;
 
 public class User {
     private String name;
-    private String email, pass, phone;
+    private String email, pass, phone, role;
     public User() {}
 
-    public User(String name, String email, String pass, String phone) {
+    public User(String name, String email, String pass, String phone, String role) {
         this.name = name;
         this.email = email;
         this.pass = pass;
         this.phone = phone;
+        this.role = role;
     }
 
     public String getName(){
@@ -42,6 +43,14 @@ public class User {
 
     public void setPhone(String phone){
         this.phone = phone;
+    }
+
+    public String getRole(){
+        return role;
+    }
+
+    public void setRole(String role){
+        this.role = role;
     }
 
 }

@@ -39,7 +39,7 @@ public class MapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        ListUserTasks = (ListView) findViewById(R.id.discr_for_task);
+//        ListUserTasks = (ListView) findViewById(R.id.discr_for_task);
         // находим элементы
         price = (EditText) findViewById(R.id.price);
         amount = (EditText) findViewById(R.id.amount);

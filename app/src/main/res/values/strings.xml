@@ -10,4 +10,8 @@
     <string name="phone">Телефон</string>
     <string name="sumForDay">Заработано за день: </string>
     <string name="sumForMonth">Заработано за месяц: </string>
+    <string name="operations">операции</string>
+    <string name="users">швеи</string>
+    <string name="models">модели</string>
+    <string name="profile">профиль</string>
 </resources>

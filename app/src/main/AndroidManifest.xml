@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Factory">
         <activity android:name=".MapActivity"></activity>
+        <activity android:name=".ForTech"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">
