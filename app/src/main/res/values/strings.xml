@@ -1,4 +1,5 @@
 <resources>
+    <string name = "add_item">Добавьте новую модель</string>
     <string name="app_name">Factory</string>
     <string name="app_name_after">Factory</string>
     <string name="text_bottom">Войдите в свою учётную запись</string>

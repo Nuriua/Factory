@@ -1,7 +1,6 @@
-package com.example.factory;
+package com.example.factory.screens;
+import com.example.factory.R;
 import com.example.factory.modules.Operation;
-import com.example.factory.modules.User;
-import com.example.factory.MainActivity;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
