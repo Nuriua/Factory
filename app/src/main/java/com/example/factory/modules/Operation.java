@@ -1,7 +1,6 @@
 package com.example.factory.modules;
 
 public class Operation {
-    public int uid;
     private String name;
     private String size, price, amount, sum;
     public Operation() {}
