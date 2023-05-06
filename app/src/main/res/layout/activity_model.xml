@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft = "5dp"
+    android:paddingRight = "5dp"
+    android:paddingTop = "5dp"
+    android:paddingBottom = "5dp"
     tools:context=".screens.ModelActivity">
 
     <RelativeLayout
         android:id="@+id/relative_name"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -38,8 +43,41 @@
     </RelativeLayout>
 
     <View
+        android:id="@+id/stroke"
         android:layout_below="@+id/relative_name"
+        app:layout_constraintTop_toBottomOf="@id/relative_name"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorPrimary"/>
-</RelativeLayout>
+
+    <ListView
+        android:id = "@+id/listView_models"
+        android:layout_width = "match_parent"
+        android:layout_height = "0dp"
+        android:layout_weight = "1"
+        app:layout_constraintTop_toBottomOf="@+id/stroke">
+    </ListView >
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    <EditText
+        android:id="@+id/todoText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black" />
+
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:text="Добавьте новую операцию" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

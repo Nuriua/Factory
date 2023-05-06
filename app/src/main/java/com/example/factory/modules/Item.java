@@ -7,6 +7,7 @@ public class Item {
     private ArrayList<Operation> operations;
 
     public Item() {}
+
     public Item(String title) {
         this.title = title;
     }

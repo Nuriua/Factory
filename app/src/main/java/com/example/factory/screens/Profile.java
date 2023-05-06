@@ -27,10 +27,6 @@ public class Profile extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                 switch (item.getItemId()){
-                    case R.id.operations:
-                        startActivity(new Intent(getApplicationContext(), Operations.class));
-                        overridePendingTransition(0,0);
-                        return true;
                     case R.id.models:
                         startActivity(new Intent(getApplicationContext(),ForTech.class));
                         overridePendingTransition(0,0);

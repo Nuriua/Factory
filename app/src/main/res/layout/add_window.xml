@@ -14,6 +14,21 @@
         <com.rengwuxian.materialedittext.MaterialEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/nameModelField"
+            android:hint="Название модели"
+            android:inputType="text"
+            android:text=""
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            app:met_floatingLabel="highlight"
+            app:met_baseColor="#69525D"
+            app:met_primaryColor="#982360"
+            app:met_singleLineEllipsis="true"/>
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/nameOperationField"
             android:hint="Название операции"
             android:inputType="text"
@@ -71,7 +86,21 @@
             app:met_primaryColor="#982360"
             app:met_singleLineEllipsis="true"/>
 
-    </LinearLayout>
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/seamstressField"
+            android:hint="Швея"
+            android:inputType="text"
+            android:text=""
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            app:met_floatingLabel="highlight"
+            app:met_baseColor="#69525D"
+            app:met_primaryColor="#982360"
+            app:met_singleLineEllipsis="true"/>
 
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

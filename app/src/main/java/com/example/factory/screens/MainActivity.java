@@ -48,15 +48,11 @@ public class MainActivity extends AppCompatActivity {
 
         btnRegister.setOnClickListener(new View.OnClickListener() {//слушатель кликанья
             @Override
-            public void onClick(View view) {
-                showRegisterWindow();
-            }
+            public void onClick(View view) { showRegisterWindow(); }
         });
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                showSignInWindow();
-            }
+            public void onClick(View view) { showSignInWindow(); }
         });
     }
 

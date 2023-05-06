@@ -6,11 +6,6 @@
         android:icon="@drawable/img"
         android:title="@string/models"/>
     <item
-        android:id="@+id/operations"
-        android:enabled="true"
-        android:icon="@drawable/operations"
-        android:title="@string/operations"/>
-    <item
         android:id="@+id/users"
         android:enabled="true"
         android:icon="@drawable/users"

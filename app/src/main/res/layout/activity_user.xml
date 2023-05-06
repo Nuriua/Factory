@@ -20,11 +20,24 @@
         android:focusable="true"
         android:paddingVertical="10dp">
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:src="@drawable/facebook_avatar"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/white"
+            android:layout_marginStart="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="70dp"
             android:orientation="vertical">
+
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -77,6 +90,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryDark"
-            android:text="@string/add_item" />
+            android:text="Добавьте новую операцию" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

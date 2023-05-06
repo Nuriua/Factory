@@ -27,10 +27,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
 public class Users extends AppCompatActivity {//
-    BottomNavigationView bottomNavigationView;
-    ListView listview_users;
+    BottomNavigationView bottomNavigationView;//меню
+    ListView listview_users;//список пользователей
     private DatabaseReference mDatabase;//ссылка на бд
-    ArrayList<String> myArrayList = new ArrayList<>();
+    ArrayList<String> myArrayList = new ArrayList<>();//массив строк в виде списка
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class Users extends AppCompatActivity {//
         setContentView(R.layout.activity_users);
 
         ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<String>(Users.this, android.R.layout.simple_list_item_1,myArrayList);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference();//получаем ссылку на бд
         listview_users = (ListView)findViewById(R.id.listview_users);
         listview_users.setAdapter(myArrayAdapter);
 
@@ -85,10 +85,6 @@ public class Users extends AppCompatActivity {//
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                 switch (item.getItemId()){
-                    case R.id.operations:
-                        startActivity(new Intent(getApplicationContext(), Operations.class));
-                        overridePendingTransition(0,0);
-                        return true;
                     case R.id.models:
                         startActivity(new Intent(getApplicationContext(),ForTech.class));
                         overridePendingTransition(0,0);

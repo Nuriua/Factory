@@ -49,6 +49,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-database'
     // FirebaseUI Database only
     implementation 'com.firebaseui:firebase-ui-database:1.1.1'
+    //Firebase Cloud Messaging
+    implementation 'com.google.firebase:firebase-messaging:11.4.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
