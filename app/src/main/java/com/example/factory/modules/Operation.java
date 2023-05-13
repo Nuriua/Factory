@@ -1,14 +1,16 @@
 package com.example.factory.modules;
 
 public class Operation {
-    private String name, size, price, amount, sum, seamstress;
+    private String name, model, size, price, amount, amountOfDone, sum, seamstress;
     public Operation() {}
 
-    public Operation(String name, String size, String price, String amount, String sum, String seamstress) {
+    public Operation(String name, String model, String size, String price, String amount, String amountOfDone, String sum, String seamstress) {
         this.name = name;
+        this.model = model;
         this.size = size;
         this.price = price;
         this.amount = amount;
+        this.amountOfDone = amountOfDone;
         this.sum = sum;
         this.seamstress = seamstress;
     }
@@ -19,6 +21,14 @@ public class Operation {
 
     public void setName(String name){
         this.name = name;
+    }
+
+    public String getModel(){
+        return model;
+    }
+
+    public void setModel(String model){
+        this.model = model;
     }
 
     public String getSize(){
@@ -43,6 +53,14 @@ public class Operation {
 
     public void setAmount(String amount){
         this.amount = amount;
+    }
+
+    public String getAmountOfDone(){
+        return amountOfDone;
+    }
+
+    public void setAmountOfDone(String amountOfDone){
+        this.amountOfDone = amountOfDone;
     }
 
     public String getSum(){

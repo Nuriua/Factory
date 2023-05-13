@@ -1,5 +1,6 @@
 package com.example.factory.screens;
 import com.example.factory.R;
+import com.example.factory.modules.Item;
 import com.example.factory.modules.Operation;
 import com.example.factory.modules.User;
 import com.firebase.ui.database.FirebaseListAdapter;
@@ -13,14 +14,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -30,6 +36,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapActivity extends AppCompatActivity {
@@ -48,6 +55,7 @@ public class MapActivity extends AppCompatActivity {
     private List<Operation> Operations;
     RelativeLayout root;
     ListView ListUserTasks;
+//    ArrayList<Operation> operationArrayList = new ArrayList<>();
 
     FirebaseListAdapter mAdapter;
     @Override
@@ -70,6 +78,7 @@ public class MapActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String s = "";
                 for (DataSnapshot ds : snapshot.getChildren()){
+//                    operationArrayList.add(ds.getValue(Operation.class));
                     if (ds.child("name").getValue(String.class) != null) {
                         s = s + "\n" + "Название операции : " + ds.child("name").getValue().toString() + "\n" +
                                 "Размер изделия : " + ds.child("size").getValue().toString() + "\n" +
@@ -89,7 +98,36 @@ public class MapActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                String postKey = operationArrayList.get(i).getKey();
+                AlertDialog.Builder dialog = new AlertDialog.Builder(MapActivity.this);
+                dialog.setTitle("Отредактировать количество выполненных операций");
+                dialog.setMessage("Введите количество выполненных операций");
+                LayoutInflater inflater = LayoutInflater.from(MapActivity.this);
+                View update_window = inflater.inflate(R.layout.update_window, null);
+                dialog.setView(update_window);
 
+                final MaterialEditText amount = update_window.findViewById(R.id.amountOfOperationsField);
+
+                dialog.setNegativeButton("Отменить", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                dialog.setPositiveButton("Добавить", new DialogInterface.OnClickListener() {//здесь проверяем роль
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (TextUtils.isEmpty(amount.getText().toString())) {
+                            Snackbar.make(root, "Введите количество выполненных операций", Snackbar.LENGTH_SHORT).show();
+                            return;
+                        }
+//                        myRef.child("Анна Валерьевна").child("operations").child(getRef(i).getKey()).setValue(amount.getText().toString());
+//                        myRef.child("Анна Валерьевна").child("operations").child(getRef(i).getKey()).updateChildren(map).addOnCopmpliteLi;//новое изменение!!!!!
+//                        myRef.child("Users").child("operations").child("").push().setValue(amount.getText().toString());//новое изменение!!!!!
+                    }
+                });
+                dialog.show();
             }
         });
     }

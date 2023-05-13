@@ -137,8 +137,8 @@ public class ForTech extends AppCompatActivity {
                             return;
                         }
                         Operation operation;
-                        if (name_operation.getText() != null && price.getText() != null && size.getText() != null && amount.getText() != null && seamstress.getText() != null) {
-                            operation = new Operation(name_operation.getText().toString(), price.getText().toString(), size.getText().toString(), amount.getText().toString(), ".", seamstress.getText().toString());
+                        if (name_operation.getText() != null && name_model.getText() != null && price.getText() != null && size.getText() != null && amount.getText() != null && seamstress.getText() != null) {
+                            operation = new Operation(name_operation.getText().toString(), name_model.getText().toString(), price.getText().toString(), size.getText().toString(), amount.getText().toString(), "0", "0", seamstress.getText().toString());
                             ArrayList<Operation> list = new ArrayList<>();
                             list.add(operation);
 
