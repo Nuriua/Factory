@@ -4,6 +4,9 @@ import com.example.factory.modules.Item;
 import com.example.factory.modules.Operation;
 import com.example.factory.modules.User;
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,6 +23,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,6 +32,7 @@ import android.os.Bundle;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -40,13 +46,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MapActivity extends AppCompatActivity {
-
-    EditText price, price2, price3, price4, price5;
-    EditText amount, amount2, amount3, amount4, amount5;
-    TextView tvResult, tvResult2, tvResult3, tvResult4, tvResult5, textView3, textView5;
-    TextView textView;
-    User user;
-    String name;
+    private RecyclerView recyclerView;
+    private OperationAdapter adapter;
+    FirebaseUser user;
 
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
@@ -55,7 +57,8 @@ public class MapActivity extends AppCompatActivity {
     private List<Operation> Operations;
     RelativeLayout root;
     ListView ListUserTasks;
-//    ArrayList<Operation> operationArrayList = new ArrayList<>();
+    TextView textView3;
+    BottomNavigationView bottomNavigationView;
 
     FirebaseListAdapter mAdapter;
     @Override
@@ -63,82 +66,75 @@ public class MapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-
-        ListView listView = (ListView) findViewById(R.id.listViewOperations);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1);
-        listView.setAdapter(adapter);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        recyclerView = findViewById(R.id.recycler);
+        textView3 = findViewById(R.id.textView3);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         myRef = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mAuth.getCurrentUser();
-        mUserId = mFirebaseUser.getUid();
-        name = mFirebaseUser.getDisplayName();
+        mUserId = mAuth.getCurrentUser().getUid();
+        user = mAuth.getCurrentUser();
 
-        myRef.child("Анна Валерьевна").child("operations").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String s = "";
-                for (DataSnapshot ds : snapshot.getChildren()){
-//                    operationArrayList.add(ds.getValue(Operation.class));
-                    if (ds.child("name").getValue(String.class) != null) {
-                        s = s + "\n" + "Название операции : " + ds.child("name").getValue().toString() + "\n" +
-                                "Размер изделия : " + ds.child("size").getValue().toString() + "\n" +
-                                "Цена за единицу операции : " + ds.child("price").getValue().toString() + "\n" +
-                                "Необходимо выполнить : " + ds.child("amount").getValue().toString() + "\n" +
-                                "Выполнено : " + ds.child("sum").getValue().toString() + "\n";
-                        adapter.add(s);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                throw error.toException();
-            }
-        });
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                String postKey = operationArrayList.get(i).getKey();
-                AlertDialog.Builder dialog = new AlertDialog.Builder(MapActivity.this);
-                dialog.setTitle("Отредактировать количество выполненных операций");
-                dialog.setMessage("Введите количество выполненных операций");
-                LayoutInflater inflater = LayoutInflater.from(MapActivity.this);
-                View update_window = inflater.inflate(R.layout.update_window, null);
-                dialog.setView(update_window);
-
-                final MaterialEditText amount = update_window.findViewById(R.id.amountOfOperationsField);
-
-                dialog.setNegativeButton("Отменить", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                dialog.setPositiveButton("Добавить", new DialogInterface.OnClickListener() {//здесь проверяем роль
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (TextUtils.isEmpty(amount.getText().toString())) {
-                            Snackbar.make(root, "Введите количество выполненных операций", Snackbar.LENGTH_SHORT).show();
-                            return;
+        if (user != null) {
+            String displayName = user.getDisplayName();
+            myRef.child(displayName).child("operations").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Integer income = 0;
+                    String s = "";
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (ds.child("sum").getValue(String.class) != null) {
+                            s = ds.child("sum").getValue(String.class);
+                            income = income + Integer.parseInt(s);
                         }
-//                        myRef.child("Анна Валерьевна").child("operations").child(getRef(i).getKey()).setValue(amount.getText().toString());
-//                        myRef.child("Анна Валерьевна").child("operations").child(getRef(i).getKey()).updateChildren(map).addOnCopmpliteLi;//новое изменение!!!!!
-//                        myRef.child("Users").child("operations").child("").push().setValue(amount.getText().toString());//новое изменение!!!!!
                     }
-                });
-                dialog.show();
+                    myRef.child(displayName).child("income").child("month").setValue(income);
+                    textView3.setText(income.toString());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    throw error.toException(); // never ignore errors
+                }
+            });
+
+            FirebaseRecyclerOptions<Operation> options =
+                    new FirebaseRecyclerOptions.Builder<Operation>()
+                            .setQuery(FirebaseDatabase.getInstance().getReference().child(displayName).child("operations"), Operation.class)
+                            .build();
+            adapter = new OperationAdapter(options, this);
+            recyclerView.setAdapter(adapter);
+        }
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId()){
+                    case R.id.operations:
+                        return true;
+//                    case R.id.users:
+//                        startActivity(new Intent(getApplicationContext(),Users.class));
+//                        overridePendingTransition(0,0);
+//                        return true;
+                    case R.id.profile:
+                        startActivity(new Intent(getApplicationContext(),Profile_seamstress.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                }
+                return false;
             }
         });
     }
 
-    public void clickButton(View v) {
-//        tvResult.setText(s);
-//        tvResult2.setText(ss2);
-//        tvResult3.setText(ss3);
-//        tvResult4.setText(ss4);
-//        tvResult5.setText(ss5);
-//        textView3.setText(ss6);
+    @Override
+    protected void onStart(){
+        super.onStart();
+        adapter.startListening();
     }
 
+    @Override
+    protected void onStop(){
+        super.onStop();
+        adapter.stopListening();
+    }
 }

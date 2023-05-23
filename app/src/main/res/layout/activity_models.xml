@@ -19,7 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/addButton"
-        android:layout_marginBottom="13dp"></ListView>
+        android:layout_marginBottom="13dp"
+        tools:listitem="@layout/list_model"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,7 +29,6 @@
         android:orientation="vertical"
         android:paddingBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation">
-
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

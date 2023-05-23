@@ -85,10 +85,10 @@ public class Users extends AppCompatActivity {//
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                 switch (item.getItemId()){
-                    case R.id.models:
-                        startActivity(new Intent(getApplicationContext(),ForTech.class));
-                        overridePendingTransition(0,0);
-                        return true;
+//                    case R.id.models:
+//                        startActivity(new Intent(getApplicationContext(),ForTech.class));
+//                        overridePendingTransition(0,0);
+//                        return true;
                     case R.id.users:
                         return true;
                     case R.id.profile:

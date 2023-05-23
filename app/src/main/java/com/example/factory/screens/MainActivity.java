@@ -15,11 +15,15 @@ import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 
 import com.example.factory.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.example.factory.modules.User;
@@ -90,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(AuthResult authResult) {
                                 if (email.getText().toString().equals("nyriya36@gmail.com") && pass.getText().toString().equals("privet")) {
-                                    startActivity(new Intent(MainActivity.this, ForTech.class));
+                                    startActivity(new Intent(MainActivity.this, Users.class));
                                     finish();
                                 }
                                 else{
@@ -173,6 +177,22 @@ public class MainActivity extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(Void unused) {
                                                 Snackbar.make(root, "Пользователь добавлен!", Snackbar.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                String newDisplayName = name.getText().toString();
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(newDisplayName)
+                                        .build();
+                                FirebaseUser mUser = auth.getCurrentUser();
+                                mUser.updateProfile(profileUpdates)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    // Имя отображения успешно обновлено
+                                                } else {
+                                                    // Произошла ошибка при обновлении имени отображения
+                                                }
                                             }
                                         });
                             }

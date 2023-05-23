@@ -44,6 +44,7 @@ public class ForTech extends AppCompatActivity {
     private FirebaseUser mFirebaseUser;
     RelativeLayout root;
     Button button;
+    String key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +59,14 @@ public class ForTech extends AppCompatActivity {
 
         //нижнее меню
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.models);
+//        bottomNavigationView.setSelectedItemId(R.id.models);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                 switch (item.getItemId()) {
-                    case R.id.models:
-                        return true;
+//                    case R.id.models:
+//                        return true;
                     case R.id.users:
                         startActivity(new Intent(getApplicationContext(), Users.class));
                         overridePendingTransition(0, 0);
@@ -83,8 +84,32 @@ public class ForTech extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.listView);
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1);
         listView.setAdapter(adapter);
-//        final EditText text = (EditText) findViewById(R.id.todoText);//поле ввода
 
+        mDatabase.child("users").child(mUserId).child("items").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                adapter.add(dataSnapshot.getValue().toString());
+                key = dataSnapshot.getKey();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                adapter.remove(dataSnapshot.getValue().toString());
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,61 +163,34 @@ public class ForTech extends AppCompatActivity {
                         }
                         Operation operation;
                         if (name_operation.getText() != null && name_model.getText() != null && price.getText() != null && size.getText() != null && amount.getText() != null && seamstress.getText() != null) {
-                            operation = new Operation(name_operation.getText().toString(), name_model.getText().toString(), price.getText().toString(), size.getText().toString(), amount.getText().toString(), "0", "0", seamstress.getText().toString());
+                            operation = new Operation(name_operation.getText().toString(), name_model.getText().toString(), size.getText().toString(), price.getText().toString(), amount.getText().toString(), "0", "0", seamstress.getText().toString());
                             ArrayList<Operation> list = new ArrayList<>();
                             list.add(operation);
 
                             //сохранение модели в бд
-                            Item item = new Item(name_model.getText().toString(), list);//создается новый объект item
-                            mDatabase.child("Users").child(mUserId).child("items").push().setValue(item);//записываем объект в бд
-
+                            Item item = new Item(name_model.getText().toString());
+                            DatabaseReference newRef = mDatabase.child("Users").child(mUserId).child("items").push();
+                            String key = newRef.getKey();
+                            newRef.setValue(item);
+                            mDatabase.child("Users").child(mUserId).child("items").child(key).child("operations").push().setValue(operation);
                             mDatabase.child(seamstress.getText().toString()).child("operations").push().setValue(operation);//новое изменение!!!!!
 
-                            mDatabase.child("users").child(mUserId).child("items").push().setValue(item.getTitle());//записываем объект в бд
+                            mDatabase.child("users").child(mUserId).child("items").push().setValue(item.getTitle());
                         }
                     }
                 });
                 dialog.show();
-                mDatabase.child("users").child(mUserId).child("items").addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        adapter.add(dataSnapshot.getValue().toString());
-                        Snackbar.make(root, "модель добавлена!", Snackbar.LENGTH_SHORT).show();
-                    }
 
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-                        adapter.remove(dataSnapshot.getValue().toString());
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
             }
 
         });
 
-//                Item item = new Item(text.getText().toString());//создается новый объект item
-//                mDatabase.child("Users").child(mUserId).child("items").push().setValue(item);//записываем объект в бд
-//                text.setText("");//чистим поле ввода
-
-        // Use Firebase to populate the list.
-
-        // открыть новое активити
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(ForTech.this, ModelActivity.class);
                 intent.putExtra("name", adapter.getItem(i));
+                intent.putExtra("key", key);
                 startActivity(intent);
             }
         });
