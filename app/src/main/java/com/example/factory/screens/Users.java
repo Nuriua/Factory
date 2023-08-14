@@ -8,16 +8,13 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.factory.R;
-import com.example.factory.databinding.ActivityMainBinding;
 import com.example.factory.modules.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,30 +27,42 @@ public class Users extends AppCompatActivity {//
     BottomNavigationView bottomNavigationView;//меню
     ListView listview_users;//список пользователей
     private DatabaseReference mDatabase;//ссылка на бд
-    ArrayList<String> myArrayList = new ArrayList<>();//массив строк в виде списка
+    ArrayList<User> myArrayList = new ArrayList<>();//массив пользователей в виде списка
+    String mUserId;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
-
-        ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<String>(Users.this, android.R.layout.simple_list_item_1,myArrayList);
-        mDatabase = FirebaseDatabase.getInstance().getReference();//получаем ссылку на бд
+        mAuth = FirebaseAuth.getInstance();
+        mUserId = mAuth.getCurrentUser().getUid();
+        ListAdapter listAdapter = new ListAdapter(Users.this, myArrayList);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         listview_users = (ListView)findViewById(R.id.listview_users);
-        listview_users.setAdapter(myArrayAdapter);
+        listview_users.setAdapter(listAdapter);
+        listview_users.setClickable(true);
 
-        // Use Firebase to populate the list.
         mDatabase.child("Users").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String value = dataSnapshot.child("name").getValue(String.class);
-                myArrayList.add(value);
-                myArrayAdapter.notifyDataSetChanged();
+                String uid = dataSnapshot.getKey();
+                if (!uid.equals(mUserId)){
+                    String name = dataSnapshot.child("name").getValue(String.class);
+                    String surname = dataSnapshot.child("surname").getValue(String.class);
+                    String mail = dataSnapshot.child("email").getValue(String.class);
+                    String phone = dataSnapshot.child("phone").getValue(String.class);
+                    String role = dataSnapshot.child("role").getValue(String.class);
+                    String photoUrl = dataSnapshot.child("photoUrl").getValue(String.class);
+                    User user = new User(uid, name, surname, mail, "pass", phone, role, photoUrl);
+                    myArrayList.add(user);
+                    listAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                myArrayAdapter.notifyDataSetChanged();
+                listAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -72,23 +81,21 @@ public class Users extends AppCompatActivity {//
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(Users.this, UserActivity.class);
-                intent.putExtra("name", myArrayAdapter.getItem(i));
+                intent.putExtra("uid", listAdapter.getItem(i).getUid());
+                intent.putExtra("name", listAdapter.getItem(i).getName());
+                intent.putExtra("surname", listAdapter.getItem(i).getSurname());
+                intent.putExtra("mail", listAdapter.getItem(i).getEmail());
+                intent.putExtra("photo", listAdapter.getItem(i).getPhotoUrl());
                 startActivity(intent);
             }
         });
-
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.users);
-        //нижнее меню
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                 switch (item.getItemId()){
-//                    case R.id.models:
-//                        startActivity(new Intent(getApplicationContext(),ForTech.class));
-//                        overridePendingTransition(0,0);
-//                        return true;
                     case R.id.users:
                         return true;
                     case R.id.profile:

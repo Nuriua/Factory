@@ -1,49 +1,35 @@
 package com.example.factory.screens;
 import com.example.factory.R;
-import com.example.factory.modules.Item;
 import com.example.factory.modules.Operation;
-import com.example.factory.modules.User;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.rengwuxian.materialedittext.MaterialEditText;
+import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 
-import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class MapActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -51,14 +37,15 @@ public class MapActivity extends AppCompatActivity {
     FirebaseUser user;
 
     private FirebaseAuth mAuth;
-    private FirebaseUser mFirebaseUser;
     private DatabaseReference myRef;
     private String mUserId;
-    private List<Operation> Operations;
     RelativeLayout root;
-    ListView ListUserTasks;
     TextView textView3;
     BottomNavigationView bottomNavigationView;
+    Calendar calendar;
+    SimpleDateFormat monthFormat;
+    String currentMonth;
+    ImageView imageView;
 
     FirebaseListAdapter mAdapter;
     @Override
@@ -74,10 +61,29 @@ public class MapActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mUserId = mAuth.getCurrentUser().getUid();
         user = mAuth.getCurrentUser();
+        calendar = Calendar.getInstance();
+        monthFormat = new SimpleDateFormat("MMMM");
+        currentMonth = monthFormat.format(calendar.getTime());
+        imageView = findViewById(R.id.imageView);
 
         if (user != null) {
-            String displayName = user.getDisplayName();
-            myRef.child(displayName).child("operations").addListenerForSingleValueEvent(new ValueEventListener() {
+            myRef.child("Users").child(mUserId).child("photoUrl").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String image = snapshot.getValue().toString();
+                    Picasso.get()
+                            .load(image)
+                            .into(imageView);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    System.out.println("Ошибка чтения данных");
+                }
+            });
+
+            String email = user.getEmail();
+            myRef.child(mUserId).child(currentMonth).child("operations").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     Integer income = 0;
@@ -88,10 +94,9 @@ public class MapActivity extends AppCompatActivity {
                             income = income + Integer.parseInt(s);
                         }
                     }
-                    myRef.child(displayName).child("income").child("month").setValue(income);
+                    myRef.child(mUserId).child(currentMonth).child("income").setValue(income);//исправить месяц!!!
                     textView3.setText(income.toString());
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     throw error.toException(); // never ignore errors
@@ -100,7 +105,7 @@ public class MapActivity extends AppCompatActivity {
 
             FirebaseRecyclerOptions<Operation> options =
                     new FirebaseRecyclerOptions.Builder<Operation>()
-                            .setQuery(FirebaseDatabase.getInstance().getReference().child(displayName).child("operations"), Operation.class)
+                            .setQuery(FirebaseDatabase.getInstance().getReference().child(mUserId).child(currentMonth).child("operations"), Operation.class)
                             .build();
             adapter = new OperationAdapter(options, this);
             recyclerView.setAdapter(adapter);
@@ -112,10 +117,6 @@ public class MapActivity extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.operations:
                         return true;
-//                    case R.id.users:
-//                        startActivity(new Intent(getApplicationContext(),Users.class));
-//                        overridePendingTransition(0,0);
-//                        return true;
                     case R.id.profile:
                         startActivity(new Intent(getApplicationContext(),Profile_seamstress.class));
                         overridePendingTransition(0,0);

@@ -1,10 +1,10 @@
 package com.example.factory.modules;
 
 public class Operation {
-    private String name, model, size, price, amount, amountOfDone, sum, seamstress;
+    private String name, model, size, price, amount, amountOfDone, sum, seamstress, uid, pack;
     public Operation() {}
 
-    public Operation(String name, String model, String size, String price, String amount, String amountOfDone, String sum, String seamstress) {
+    public Operation(String name, String model, String size, String price, String amount, String amountOfDone, String sum, String seamstress, String uid, String pack) {
         this.name = name;
         this.model = model;
         this.size = size;
@@ -13,6 +13,8 @@ public class Operation {
         this.amountOfDone = amountOfDone;
         this.sum = sum;
         this.seamstress = seamstress;
+        this.uid = uid;
+        this.pack = pack;
     }
 
     public String getName(){
@@ -77,6 +79,22 @@ public class Operation {
 
     public void setSeamstress(String seamstress){
         this.seamstress = seamstress;
+    }
+
+    public String getUid(){
+        return uid;
+    }
+
+    public void setUid(String uid){
+        this.uid = uid;
+    }
+
+    public String getPack(){
+        return pack;
+    }
+
+    public void setPack(String pack){
+        this.pack = pack;
     }
 
 }

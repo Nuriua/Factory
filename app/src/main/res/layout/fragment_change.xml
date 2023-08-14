@@ -3,12 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".screens.ChangeFragment">
+    android:layout_height="match_parent">
 
     <EditText
         android:id="@+id/settings_input_name"
-        android:hint="Имя Фамилия"
+        android:hint="Имя"
         android:textSize="18dp"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
@@ -21,8 +20,8 @@
         android:textStyle="bold"/>
 
     <EditText
-        android:id="@+id/settings_input_mail"
-        android:hint="Почта"
+        android:id="@+id/settings_input_surname"
+        android:hint="Фамилия"
         android:textSize="18dp"
         android:layout_margin="10dp"
         android:layout_width="match_parent"

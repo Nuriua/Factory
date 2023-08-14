@@ -1,17 +1,26 @@
 package com.example.factory.modules;
 
 public class User {
-    private String name;
-    private String email, pass, phone, role, photoUrl;
+    private String uid, name, surname, email, pass, phone, role, photoUrl;
     public User() {}
 
-    public User(String name, String email, String pass, String phone, String role, String photoUrl) {
+    public User(String uid, String name, String surname, String email, String pass, String phone, String role, String photoUrl) {
+        this.uid = uid;
         this.name = name;
+        this.surname = surname;
         this.email = email;
         this.pass = pass;
         this.phone = phone;
         this.role = role;
         this.photoUrl = photoUrl;
+    }
+
+    public String getUid(){
+        return uid;
+    }
+
+    public void setUid(String uid){
+        this.uid = uid;
     }
 
     public String getName(){
@@ -20,6 +29,14 @@ public class User {
 
     public void setName(String name){
         this.name = name;
+    }
+
+    public String getSurname(){
+        return surname;
+    }
+
+    public void setSurname(String surname){
+        this.surname = surname;
     }
 
     public String getEmail(){
@@ -55,7 +72,7 @@ public class User {
     }
 
     public String getPhotoUrl(){
-        return getPhotoUrl();
+        return photoUrl;
     }
 
     public void setPhotoUrl(String photoUrl){

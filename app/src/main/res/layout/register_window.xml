@@ -65,6 +65,23 @@
         <com.rengwuxian.materialedittext.MaterialEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/surnameField"
+            android:hint="Фамилия"
+            android:inputType="text"
+            android:text=""
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            app:met_floatingLabel="highlight"
+            app:met_baseColor="#69525D"
+            app:met_primaryColor="#982360"
+            app:met_singleLineEllipsis="true"
+
+            />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/phoneField"
             android:hint="@string/phone"
             android:inputType="phone"
@@ -78,12 +95,6 @@
             app:met_singleLineEllipsis="true"
 
             />
-
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="я технолог" />
 
     </LinearLayout>
 

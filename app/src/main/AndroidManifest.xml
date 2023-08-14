@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.factory">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
@@ -9,9 +10,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.Factory">
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
         <activity
             android:name=".screens.Users"
             android:exported="false">
@@ -21,13 +24,6 @@
         </activity>
         <activity
             android:name=".screens.Profile"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".screens.ModelActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -48,7 +44,6 @@
                 android:value="" />
         </activity>
         <activity android:name=".screens.MapActivity" />
-        <activity android:name=".screens.ForTech" />
         <activity
             android:name=".screens.MainActivity"
             android:exported="true">

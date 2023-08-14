@@ -9,42 +9,32 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.example.factory.R;
 import com.example.factory.databinding.ActivityUserBinding;
-import com.example.factory.modules.Item;
 import com.example.factory.modules.Operation;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Objects;
 
 public class UserActivity extends AppCompatActivity {
-
     ActivityUserBinding binding;
     private DatabaseReference mDatabase;
-    private OperationAdapter adapter;
+    private TechOperationAdapter adapter;
     FirebaseAuth mAuth;
     FirebaseUser user;
     Calendar calendar;
@@ -69,9 +59,13 @@ public class UserActivity extends AppCompatActivity {
         root = findViewById(R.id.root_element);
 
         if (intent != null){
+            String uid = intent.getStringExtra("uid");
             String name = intent.getStringExtra("name");
-            binding.nameProfile.setText(name);
-            mDatabase.child(name).child("operations").addListenerForSingleValueEvent(new ValueEventListener() {
+            String surname = intent.getStringExtra("surname");
+            String photoUrl = intent.getStringExtra("photo");
+            Picasso.get().load(photoUrl).into(binding.profilePic);
+            binding.nameProfile.setText(name + " " + surname);
+            mDatabase.child(uid).child(currentMonth).child("operations").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     Integer income = 0;
@@ -82,30 +76,27 @@ public class UserActivity extends AppCompatActivity {
                             income = income + Integer.parseInt(s);
                         }
                     }
-                    mDatabase.child(name).child("income").child(currentMonth).setValue(income);
+                    mDatabase.child(uid).child(currentMonth).child("income").setValue(income);
                     binding.income.setText(income.toString());
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    throw error.toException(); // never ignore errors
+                    throw error.toException();
                 }
             });
             binding.recycler.setLayoutManager(new LinearLayoutManager(this));
             FirebaseRecyclerOptions<Operation> options =
                     new FirebaseRecyclerOptions.Builder<Operation>()
-                            .setQuery(FirebaseDatabase.getInstance().getReference().child(name).child("operations"), Operation.class)
+                            .setQuery(FirebaseDatabase.getInstance().getReference().child(uid).child(currentMonth).child("operations"), Operation.class)
                             .build();
-            adapter = new OperationAdapter(options, this);
+            adapter = new TechOperationAdapter(options, this);
             binding.recycler.setAdapter(adapter);
         }
-
-        String name = intent.getStringExtra("name");
+        String uid = intent.getStringExtra("uid");
         binding.addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(UserActivity.this);
-                dialog.setTitle("Добавить операцию");
-                dialog.setMessage("Введите данные операции");
                 LayoutInflater inflater = LayoutInflater.from(UserActivity.this);
                 View add_window = inflater.inflate(R.layout.add_operation_window, null);
                 dialog.setView(add_window);
@@ -115,6 +106,7 @@ public class UserActivity extends AppCompatActivity {
                 final MaterialEditText price = add_window.findViewById(R.id.priceField);
                 final MaterialEditText size = add_window.findViewById(R.id.sizeField);
                 final MaterialEditText amount = add_window.findViewById(R.id.amountField);
+                final MaterialEditText pack = add_window.findViewById(R.id.pack);
 
                 dialog.setNegativeButton("Отменить", new DialogInterface.OnClickListener() {
                     @Override
@@ -146,19 +138,22 @@ public class UserActivity extends AppCompatActivity {
                             Snackbar.make(root, "Введите количество", Snackbar.LENGTH_SHORT).show();
                             return;
                         }
+                        if (TextUtils.isEmpty(pack.getText().toString())) {
+                            Snackbar.make(root, "Введите количество", Snackbar.LENGTH_SHORT).show();
+                            return;
+                        }
                         Operation operation;
                         if (name_operation.getText() != null && name_model.getText() != null && price.getText() != null && size.getText() != null && amount.getText() != null) {
-                            operation = new Operation(name_operation.getText().toString(), name_model.getText().toString(), size.getText().toString(), price.getText().toString(), amount.getText().toString(), "0", "0", binding.nameProfile.getText().toString());
-
-                            mDatabase.child(operation.getSeamstress()).child("operations").push().setValue(operation);
+                            operation = new Operation(name_operation.getText().toString(), name_model.getText().toString(), size.getText().toString(), price.getText().toString(), amount.getText().toString(), "0", "0", binding.nameProfile.getText().toString(), uid, pack.getText().toString());
+                            mDatabase.child(uid).child(currentMonth).child("operations").push().setValue(operation);
                         }
                     }
                 });
                 dialog.show();
             }
         });
-
     }
+
     @Override
     protected void onStart(){
         super.onStart();

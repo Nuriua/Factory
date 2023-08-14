@@ -20,18 +20,22 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Objects;
 
 public class OperationAdapter extends FirebaseRecyclerAdapter<Operation, OperationAdapter.OperationViewHolder>{
-
     public Context context;
+    FirebaseUser user;
+    String mUserId;
+    FirebaseAuth mAuth;
+    Calendar calendar;
+    SimpleDateFormat monthFormat;
+    String currentMonth;
 
     public OperationAdapter(@NonNull FirebaseRecyclerOptions<Operation> options, Context context) {
         super(options);
@@ -40,9 +44,15 @@ public class OperationAdapter extends FirebaseRecyclerAdapter<Operation, Operati
 
     @Override
     protected void onBindViewHolder(@NonNull OperationViewHolder holder, int position, @NonNull Operation operation) {
+        int itemPosition = holder.getBindingAdapterPosition();
+        calendar = Calendar.getInstance();
+        monthFormat = new SimpleDateFormat("MMMM");
+        currentMonth = monthFormat.format(calendar.getTime());
+
         holder.name.setText("Операция: " + operation.getName());
         holder.model.setText("Модель: " + operation.getModel());
         holder.size.setText("Размер: " + operation.getSize());
+        holder.pack.setText("Номер пачки: " + operation.getPack());
         holder.price.setText("Цена: " + operation.getPrice());
         holder.amount.setText("Количество: " + operation.getAmount());
         holder.amountOfDone.setText("Выполнено: " + operation.getAmountOfDone());
@@ -53,32 +63,41 @@ public class OperationAdapter extends FirebaseRecyclerAdapter<Operation, Operati
             public void onClick(View view) {
                 DialogPlus dialog = DialogPlus.newDialog(context)
                         .setGravity(Gravity.CENTER)
-                        .setMargin(50,0,50,0)
+                        .setMargin(50, 0, 50, 0)
                         .setContentHolder(new ViewHolder(R.layout.content))
                         .setExpanded(false)  // This will enable the expand feature, (similar to android L share dialog)
                         .create();
-
                 View holderView = (LinearLayout) dialog.getHolderView();
-
                 EditText amount = holderView.findViewById(R.id.amountOfDoneField);
-
                 amount.setText(operation.getAmountOfDone());
+                Button plus = holderView.findViewById(R.id.buttonPlus);
+                plus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String valueStr = amount.getText().toString();
+                        int value = Integer.parseInt(valueStr);
+                        value++;
+                        amount.setText(String.valueOf(value));
+                    }
+                });
                 Button update = holderView.findViewById(R.id.update);
-
                 update.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Long p = Long.parseLong(operation.getPrice().toString());
                         Long a = Long.parseLong(amount.getText().toString());
-                        Long s = p*a;
+                        Long s = p * a;
+                        mAuth = FirebaseAuth.getInstance();
+                        user = mAuth.getCurrentUser();
+                        mUserId = user.getUid();
                         FirebaseDatabase.getInstance().getReference()
-                                .child("Анна Валерьевна")
+                                .child(mUserId).child(currentMonth)
                                 .child("operations")
-                                .child(Objects.requireNonNull(getRef(holder.getBindingAdapterPosition()).getKey()))
+                                .child(Objects.requireNonNull(getRef(itemPosition).getKey()))
                                 .child("amountOfDone")
                                 .setValue(amount.getText().toString());
                         FirebaseDatabase.getInstance().getReference()
-                                .child("Анна Валерьевна")
+                                .child(mUserId).child(currentMonth)
                                 .child("operations")
                                 .child(Objects.requireNonNull(getRef(holder.getBindingAdapterPosition()).getKey()))
                                 .child("sum")
@@ -89,13 +108,6 @@ public class OperationAdapter extends FirebaseRecyclerAdapter<Operation, Operati
                 dialog.show();
             }
         });
-
-//        holder.delete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
     }
 
     @NonNull
@@ -107,29 +119,22 @@ public class OperationAdapter extends FirebaseRecyclerAdapter<Operation, Operati
     }
 
     class OperationViewHolder extends RecyclerView.ViewHolder{
-
-        TextView name, model, size, price, amount, amountOfDone, sum;
+        TextView name, model, size, price, amount, amountOfDone, sum, pack;
         ImageView edit, delete;
-
 
         public OperationViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.nameOperation);
             model = itemView.findViewById(R.id.nameModel);
             size = itemView.findViewById(R.id.size);
+            pack = itemView.findViewById(R.id.pack);
             price = itemView.findViewById(R.id.price);
             amount = itemView.findViewById(R.id.amount);
             amountOfDone = itemView.findViewById(R.id.amountOfDone);
             sum = itemView.findViewById(R.id.sum);
             edit = itemView.findViewById(R.id.edit);
             delete = itemView.findViewById(R.id.delete);
-            FirebaseAuth mAuth;
-            String mUserId;
-            mAuth = FirebaseAuth.getInstance();
-            mUserId = mAuth.getCurrentUser().getUid();
-//            if (!(mUserId.equals("oWDTtAKLJVTNiegemh7Lkyawvig2"))){
-//                delete.setVisibility(View.GONE);
-//            }
+            delete.setVisibility(View.GONE);
         }
     }
 }

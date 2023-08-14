@@ -57,6 +57,17 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="10dp"
+                android:id="@+id/pack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Пачка"
+                android:textSize="18dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
                 android:id="@+id/price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -114,6 +125,7 @@
                 android:src="@drawable/edit"/>
 
             <ImageView
+                android:id="@+id/delete"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:src="@drawable/delete"/>
