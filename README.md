@@ -11,3 +11,6 @@ Operations page: On this page, the technologist can view the list of operations 
 Operation Editing Page: When you click on the operation edit icon, the operation edit page opens. The seamstress can change operation attributes such as model name, operation name, price, size and quantity.
 
 Profile page: The Profile page displays information about the seamstress, including photo, first name, last name, and monthly salary. A seamstress can edit her first and last name, log out and delete her account.
+
+https://github.com/Nuriua/Factory/assets/54796379/03c3ffad-ca96-4632-b110-555ea5a6fb02
+
